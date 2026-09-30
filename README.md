@@ -1,6 +1,9 @@
 # 🚚 UrbanDrop — SQL Analytics para Operaciones y Última Milla
 
 **PostgreSQL · SQL · DBeaver · Operations Analytics · Logistics · Last Mile**
+## 🔗 Case Study
+👉 [Ver análisis completo en Notion](https://frequent-replace-a38.notion.site/UrbanDrop-SQL-Analytics-para-Operaciones-y-ltima-Milla-3ea8671270358016a556cfce83cae5b2)
+
 
 Sobre el proyecto
 
