@@ -1,0 +1,11 @@
+﻿store_id,store_name,zone,store_type
+1,Palermo,CABA Norte,Tienda
+2,Belgrano,CABA Norte,Tienda
+3,Microcentro,CABA Centro,Tienda
+4,Caballito,CABA Centro,Tienda
+5,Avellaneda,Zona Sur GBA,Tienda
+6,Lomas,Zona Sur GBA,Tienda
+7,San Isidro,Zona Norte GBA,Tienda
+8,Vicente López,Zona Norte GBA,Tienda
+9,Morón,Zona Oeste GBA,Tienda
+10,Centro Distribución,Zona Oeste GBA,CD

@@ -1,0 +1,6 @@
+﻿courier_id,courier_name,base_sla_rate,base_cost
+1,FlashGo,0.88,1850
+2,Ruta24,0.83,1650
+3,PackNow,0.91,2100
+4,MotoYA,0.79,1450
+5,UrbanDrop Flex,0.94,2250
