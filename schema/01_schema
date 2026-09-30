@@ -1,0 +1,97 @@
+
+DROP TABLE IF EXISTS incidents CASCADE;
+DROP TABLE IF EXISTS delivery_attempts CASCADE;
+DROP TABLE IF EXISTS shipments CASCADE;
+DROP TABLE IF EXISTS order_items CASCADE;
+DROP TABLE IF EXISTS orders CASCADE;
+DROP TABLE IF EXISTS couriers CASCADE;
+DROP TABLE IF EXISTS stores CASCADE;
+DROP TABLE IF EXISTS products CASCADE;
+DROP TABLE IF EXISTS customers CASCADE;
+
+CREATE TABLE customers (
+ customer_id INTEGER PRIMARY KEY,
+ customer_segment VARCHAR(30) NOT NULL,
+ zone VARCHAR(50) NOT NULL,
+ signup_date DATE NOT NULL,
+ is_loyalty_member BOOLEAN NOT NULL
+);
+CREATE TABLE products (
+ product_id INTEGER PRIMARY KEY,
+ sku VARCHAR(20) UNIQUE NOT NULL,
+ category VARCHAR(50) NOT NULL,
+ brand VARCHAR(50) NOT NULL,
+ unit_price NUMERIC(12,2) NOT NULL,
+ unit_cost NUMERIC(12,2) NOT NULL
+);
+CREATE TABLE stores (
+ store_id INTEGER PRIMARY KEY,
+ store_name VARCHAR(80) NOT NULL,
+ zone VARCHAR(50) NOT NULL,
+ store_type VARCHAR(30) NOT NULL
+);
+CREATE TABLE couriers (
+ courier_id INTEGER PRIMARY KEY,
+ courier_name VARCHAR(80) NOT NULL,
+ base_sla_rate NUMERIC(5,4) NOT NULL,
+ base_cost NUMERIC(12,2) NOT NULL
+);
+CREATE TABLE orders (
+ order_id INTEGER PRIMARY KEY,
+ customer_id INTEGER NOT NULL REFERENCES customers(customer_id),
+ order_date DATE NOT NULL,
+ sales_channel VARCHAR(30) NOT NULL,
+ fulfillment_type VARCHAR(40) NOT NULL,
+ origin_store_id INTEGER NOT NULL REFERENCES stores(store_id),
+ customer_zone VARCHAR(50) NOT NULL,
+ prep_hours NUMERIC(10,2) NOT NULL,
+ order_value NUMERIC(14,2) NOT NULL,
+ gross_margin_value NUMERIC(14,2) NOT NULL,
+ order_status VARCHAR(30) NOT NULL
+);
+CREATE TABLE order_items (
+ order_item_id INTEGER PRIMARY KEY,
+ order_id INTEGER NOT NULL REFERENCES orders(order_id),
+ product_id INTEGER NOT NULL REFERENCES products(product_id),
+ quantity INTEGER NOT NULL,
+ unit_price NUMERIC(12,2) NOT NULL,
+ discount_pct NUMERIC(6,4) NOT NULL,
+ net_revenue NUMERIC(14,2) NOT NULL,
+ product_cost NUMERIC(14,2) NOT NULL
+);
+CREATE TABLE shipments (
+ shipment_id INTEGER PRIMARY KEY,
+ order_id INTEGER UNIQUE NOT NULL REFERENCES orders(order_id),
+ courier_id INTEGER NOT NULL REFERENCES couriers(courier_id),
+ origin_store_id INTEGER NOT NULL REFERENCES stores(store_id),
+ dispatch_at TIMESTAMP NOT NULL,
+ promised_delivery_at TIMESTAMP NOT NULL,
+ delivered_at TIMESTAMP NOT NULL,
+ shipment_status VARCHAR(30) NOT NULL,
+ shipping_cost NUMERIC(12,2) NOT NULL,
+ sla_met BOOLEAN NOT NULL,
+ delivery_attempts INTEGER NOT NULL
+);
+CREATE TABLE delivery_attempts (
+ attempt_id INTEGER PRIMARY KEY,
+ shipment_id INTEGER NOT NULL REFERENCES shipments(shipment_id),
+ attempt_number INTEGER NOT NULL,
+ attempt_at TIMESTAMP NOT NULL,
+ attempt_outcome VARCHAR(60) NOT NULL,
+ was_successful BOOLEAN NOT NULL
+);
+CREATE TABLE incidents (
+ incident_id INTEGER PRIMARY KEY,
+ shipment_id INTEGER NOT NULL REFERENCES shipments(shipment_id),
+ incident_type VARCHAR(60) NOT NULL,
+ severity VARCHAR(20) NOT NULL,
+ incident_cost NUMERIC(12,2) NOT NULL,
+ resolution_hours NUMERIC(10,2) NOT NULL
+);
+CREATE INDEX idx_orders_customer ON orders(customer_id);
+CREATE INDEX idx_orders_date ON orders(order_date);
+CREATE INDEX idx_order_items_order ON order_items(order_id);
+CREATE INDEX idx_order_items_product ON order_items(product_id);
+CREATE INDEX idx_shipments_courier ON shipments(courier_id);
+CREATE INDEX idx_attempts_shipment ON delivery_attempts(shipment_id);
+CREATE INDEX idx_incidents_shipment ON incidents(shipment_id);
