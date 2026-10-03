@@ -1,1 +1,21 @@
-
+table,column,data_type,description
+customers,customer_id,integer,Identificador único del cliente
+customers,customer_name,text,Nombre del cliente
+orders,order_id,integer,Identificador único del pedido
+orders,order_date,date,Fecha de creación del pedido
+orders,prep_hours,numeric,Horas de preparación del pedido
+shipments,shipment_id,integer,Identificador único del envío
+shipments,order_id,integer,Pedido asociado al envío
+shipments,courier_id,integer,Courier responsable
+shipments,origin_store_id,integer,Origen del envío
+shipments,dispatch_at,timestamp,Fecha y hora de despacho
+shipments,promised_delivery_at,timestamp,Fecha/hora prometida
+shipments,delivered_at,timestamp,Fecha/hora de entrega
+shipments,shipping_cost,numeric,Costo del envío
+shipments,sla_met,boolean,Indica si cumplió el SLA
+delivery_attempts,attempt_id,integer,Identificador del intento
+delivery_attempts,shipment_id,integer,Envío asociado
+incidents,incident_id,integer,Identificador de la incidencia
+incidents,shipment_id,integer,Envío asociado
+incidents,incident_type,text,Tipo de incidencia
+incidents,incident_cost,numeric,Costo asociado a la incidencia
